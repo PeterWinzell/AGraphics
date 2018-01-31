@@ -24,6 +24,9 @@ public class TextView extends View {
 
     private boolean mInitialized = false;
     private Paint mbackgroundPaint;
+    private Paint mBlackPaint;
+    private Paint mWhitePaint;
+
     private TextPaint mTextcolor_2;
     private TextPaint mTextcolor_1;
 
@@ -57,6 +60,14 @@ public class TextView extends View {
         mbackgroundPaint.setStyle(Paint.Style.FILL);
         mbackgroundPaint.setColor(Color.rgb(127, 127, 127));
 
+        mBlackPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mBlackPaint.setStyle(Paint.Style.FILL);
+        mBlackPaint.setColor(Color.BLACK);
+
+        mWhitePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mWhitePaint.setStyle(Paint.Style.FILL);
+        mWhitePaint.setColor(Color.WHITE);
+
         mTextcolor_2 = new TextPaint(Paint.ANTI_ALIAS_FLAG);
         mTextcolor_2.setColor(Color.BLUE);
         mTextcolor_2.setTypeface(Typeface.SANS_SERIF);
@@ -87,6 +98,10 @@ public class TextView extends View {
 
     private void drawBackground(Canvas canvas){
         RectF aRect = getOval(canvas,1);
+        canvas.drawArc(aRect,180,360,true,mWhitePaint);
+        aRect.inset(10,10);
+        canvas.drawArc(aRect,180,360,true,mBlackPaint);
+        aRect.inset(5,5);
         canvas.drawArc(aRect,180,360,true,mbackgroundPaint);
     }
 
