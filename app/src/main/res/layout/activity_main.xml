@@ -4,6 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintLeft_toLeftOf="parent"
+    app:layout_constraintRight_toRightOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
     tools:context="com.android.volvocars.drawsomestuff.MainActivity">
 
     <TextView
@@ -16,21 +20,30 @@
 
     <view
         class="android.support.v7.widget.AppCompatImageView"
-        id="@+id/view"
+        id="@+id/view1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="visible"
         tools:layout_editor_absoluteX="51dp"
-        tools:layout_editor_absoluteY="101dp" />
+        tools:layout_editor_absoluteY="101dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <view
         class="android.support.v7.widget.AppCompatImageView"
-        id="@+id/view"
+        id="@+id/view2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="visible"
         tools:layout_editor_absoluteX="51dp"
-        tools:layout_editor_absoluteY="101dp" />
+        tools:layout_editor_absoluteY="101dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
 
 </android.support.constraint.ConstraintLayout>

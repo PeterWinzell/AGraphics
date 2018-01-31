@@ -77,22 +77,27 @@ public class SinGauge extends View {
         Paint p = new Paint();
         p.setColor(android.graphics.Color.rgb(94, 154, 35));
         p.setStrokeWidth(50);
-        gradients.put(new Integer( 1), p);
+        gradients.put(new Integer( 10), p);
 
         p = new Paint();
         p.setStrokeWidth(50);
         p.setColor(android.graphics.Color.rgb(124, 154, 35));
-        gradients.put(new Integer( 2), p);
+        gradients.put(new Integer( 9), p);
+
+        p = new Paint();
+        p.setStrokeWidth(50);
+        p.setColor(android.graphics.Color.rgb(124, 154, 35));
+        gradients.put(new Integer( 8), p);
 
         p = new Paint();
         p.setStrokeWidth(50);
         p.setColor(android.graphics.Color.rgb(194, 194, 60));
-        gradients.put(new Integer( 3), p);
+        gradients.put(new Integer( 7), p);
 
         p = new Paint();
         p.setStrokeWidth(50);
         p.setColor(android.graphics.Color.rgb(204, 182, 83));
-        gradients.put(new Integer( 4), p);
+        gradients.put(new Integer( 6), p);
 
         p = new Paint();
         p.setStrokeWidth(50);
@@ -102,27 +107,27 @@ public class SinGauge extends View {
         p = new Paint();
         p.setStrokeWidth(50);
         p.setColor(android.graphics.Color.rgb(168, 101, 50));
-        gradients.put(new Integer( 6), p);
+        gradients.put(new Integer( 4), p);
 
         p = new Paint();
         p.setStrokeWidth(50);
         p.setColor(android.graphics.Color.rgb(201, 76, 47));
-        gradients.put(new Integer( 7), p);
+        gradients.put(new Integer( 3), p);
 
         p = new Paint();
         p.setStrokeWidth(50);
         p.setColor(android.graphics.Color.rgb(217, 54, 57));
-        gradients.put(new Integer( 8), p);
+        gradients.put(new Integer( 2), p);
 
         p = new Paint();
         p.setStrokeWidth(50);
         p.setColor(android.graphics.Color.rgb(158, 34, 37));
-        gradients.put(new Integer( 9), p);
+        gradients.put(new Integer( 1), p);
 
         p = new Paint();
         p.setStrokeWidth(50);
         p.setColor(android.graphics.Color.rgb(157, 30, 69));
-        gradients.put(new Integer( 10), p);
+        gradients.put(new Integer( 0), p);
     }
 
     private RectF getOval(Canvas canvas, float factor) {
@@ -238,9 +243,6 @@ public class SinGauge extends View {
 
         while (yd <= maxy) {
             Integer key = new Integer(Math.round(((float)mLevel / (float)maxy) * (float)yd));
-            if (key == 0)
-                key = new Integer(1);
-
             Paint p = gradients.get(key);
            // canvas.drawLine(actual_x, actual_y, actual_x, canvas.getHeight(), p);
             canvas.drawLine(actual_x, yd, actual_x, Math.min(yd+ystep, (int)maxy), p);
