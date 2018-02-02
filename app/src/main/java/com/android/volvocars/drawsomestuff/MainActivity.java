@@ -11,6 +11,10 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.test_layout);
         // setContentView(new CustomView(this));
+        SinGauge gaugeView = findViewById(R.id.sinGview);
+        TextView textView = findViewById(R.id.textSview);
+        textView.setValue(120);
+        gaugeView.setValue(7000);
     }
 
 

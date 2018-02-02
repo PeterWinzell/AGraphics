@@ -47,6 +47,7 @@ public class TextView extends View {
 
     public void setValue(float outvalue){
         mValue = outvalue;
+        invalidate();
     }
 
     public void setmUnitstr(String unitstr){

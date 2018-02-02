@@ -20,14 +20,14 @@
             android:layout_height="match_parent"
             android:layout_width="0dip"
             android:layout_weight="1"
-            android:id="@+id/customeview1"
+            android:id="@+id/sinGview"
             />
 
         <com.android.volvocars.drawsomestuff.TextView
             android:layout_height="match_parent"
             android:layout_width="0dip"
             android:layout_weight="1"
-            android:id="@+id/customview2"
+            android:id="@+id/textSview"
             />
 
     </LinearLayout>

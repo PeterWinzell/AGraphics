@@ -56,6 +56,7 @@ public class SinGauge extends View {
     }
 
 
+
     /*private void drawBackground(Canvas canvas) {
         RectF oval = getOval(canvas, 1);
         canvas.drawArc(oval, 180, 180, true, backgroundPaint);
@@ -176,9 +177,6 @@ public class SinGauge extends View {
         Canvas mCanvas = new Canvas(mbG);
 
         Rect r = mCanvas.getClipBounds();
-        setValue(8800);
-
-
         drawSinx(mCanvas);
 
         return mbG;
@@ -201,7 +199,8 @@ public class SinGauge extends View {
 
 
     public void setValue(float indata){
-            mVal =  indata;
+        mVal =  indata;
+        invalidate();
     }
 
     float getIntialLevel(float indata){
