@@ -28,16 +28,16 @@ public class SinGauge extends View {
     private final Color mRedColor    = Color.valueOf(Color.RED);
     private final Color mYellowColor = Color.valueOf(Color.YELLOW);
 
-    private Color
+    private Paint mGradPaint;
+
     private Paint mbackgroundPaint;
     private Paint mbackgroundInnerPaint;
     private boolean initialized = false;
 
     // coordinate systems default max values
-    private float mLevel = (float) 10.0;
+    private float mLevel = (float) 50.0;
     private float mMaxIndata = 9000;
 
-    private ArrayMap<Integer,Paint> gradients;
 
     private float mVal;
 
@@ -77,63 +77,9 @@ public class SinGauge extends View {
 
     private void initGradients(){
 
-        gradients = new ArrayMap<Integer, Paint>();
+        mGradPaint = new Paint();
+        mGradPaint.setStrokeWidth(50);
 
-
-        Paint p = new Paint();
-        p.setColor(android.graphics.Color.rgb(94, 154, 35));
-        p.setStrokeWidth(50);
-        gradients.put(new Integer( 10), p);
-
-        p = new Paint();
-        p.setStrokeWidth(50);
-        p.setColor(android.graphics.Color.rgb(124, 154, 35));
-        gradients.put(new Integer( 9), p);
-
-        p = new Paint();
-        p.setStrokeWidth(50);
-        p.setColor(android.graphics.Color.rgb(124, 154, 35));
-        gradients.put(new Integer( 8), p);
-
-        p = new Paint();
-        p.setStrokeWidth(50);
-        p.setColor(android.graphics.Color.rgb(194, 194, 60));
-        gradients.put(new Integer( 7), p);
-
-        p = new Paint();
-        p.setStrokeWidth(50);
-        p.setColor(android.graphics.Color.rgb(204, 182, 83));
-        gradients.put(new Integer( 6), p);
-
-        p = new Paint();
-        p.setStrokeWidth(50);
-        p.setColor(android.graphics.Color.rgb(204, 144, 83));
-        gradients.put(new Integer( 5), p);
-
-        p = new Paint();
-        p.setStrokeWidth(50);
-        p.setColor(android.graphics.Color.rgb(168, 101, 50));
-        gradients.put(new Integer( 4), p);
-
-        p = new Paint();
-        p.setStrokeWidth(50);
-        p.setColor(android.graphics.Color.rgb(201, 76, 47));
-        gradients.put(new Integer( 3), p);
-
-        p = new Paint();
-        p.setStrokeWidth(50);
-        p.setColor(android.graphics.Color.rgb(217, 54, 57));
-        gradients.put(new Integer( 2), p);
-
-        p = new Paint();
-        p.setStrokeWidth(50);
-        p.setColor(android.graphics.Color.rgb(158, 34, 37));
-        gradients.put(new Integer( 1), p);
-
-        p = new Paint();
-        p.setStrokeWidth(50);
-        p.setColor(android.graphics.Color.rgb(157, 30, 69));
-        gradients.put(new Integer( 0), p);
     }
 
     private RectF getOval(Canvas canvas, float factor) {
@@ -172,7 +118,7 @@ public class SinGauge extends View {
         double g = Interpolate(c1.green(),c2.green(),frac);
         double b = Interpolate(c1.blue(),c2.blue(),frac);
 
-        return Color.valueOf(Color.rgb((int) Math.round(r),(int) Math.round(g),(int) Math.round(b)));
+        return Color.valueOf(Color.rgb((float)r,(float)g,(float)b));
     }
 
     private double Interpolate(double d1, double d2,double frac){
@@ -236,7 +182,7 @@ public class SinGauge extends View {
     }
 
     float getIntialLevel(float indata){
-        return (mLevel / mMaxIndata) * indata;
+        return ((float)mLevel / (float)mMaxIndata) * indata;
     }
 
 
@@ -271,11 +217,11 @@ public class SinGauge extends View {
         int ystep = getPixelLevelStep(canvas);
 
         while (yd <= maxy) {
-            Integer key = new Integer(Math.round(((float)mLevel / (float)maxy) * (float)yd));
-            // Paint p = gradients.get(key);
-            Paint p;
-           // canvas.drawLine(actual_x, actual_y, actual_x, canvas.getHeight(), p);
-            canvas.drawLine(actual_x, yd, actual_x, Math.min(yd+ystep, (int)maxy), p);
+
+            float key = Math.round( (mLevel / (float)maxy) * (float)yd);
+            mGradPaint.setColor( GetBlendedColor( key / (float)mLevel).toArgb());
+            canvas.drawLine(actual_x, yd, actual_x, Math.min(yd+ystep, (int)maxy),mGradPaint);
+
             yd = yd+ystep;
         }
     }

@@ -14,7 +14,7 @@ public class MainActivity extends AppCompatActivity {
         SinGauge gaugeView = findViewById(R.id.sinGview);
         TextView textView = findViewById(R.id.textSview);
         textView.setValue(120);
-        gaugeView.setValue(7000);
+        gaugeView.setValue(9000);
     }
 
 
