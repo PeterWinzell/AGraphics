@@ -24,6 +24,11 @@ public class SinGauge extends View {
 
     Paint mPaint;
 
+    private final Color mGreenColor  = Color.valueOf(Color.GREEN);
+    private final Color mRedColor    = Color.valueOf(Color.RED);
+    private final Color mYellowColor = Color.valueOf(Color.YELLOW);
+
+    private Color
     private Paint mbackgroundPaint;
     private Paint mbackgroundInnerPaint;
     private boolean initialized = false;
@@ -144,7 +149,34 @@ public class SinGauge extends View {
 
         oval.offset((canvasWidth-oval.width())/2 + getPaddingLeft(), (canvasHeight*2-oval.height())/2 + getPaddingTop());
 
+
         return oval;
+    }
+
+
+    /**
+     *  Returns the color where you map your value (v[0,maxval] / maxval)
+     *  * @param percentage_value
+     * @return
+     */
+    public Color GetBlendedColor(float percentage_value){
+        if (percentage_value < .5){
+            return Interpolate(mRedColor,mYellowColor, (double)(percentage_value / .5));
+        }
+        return Interpolate(mYellowColor,mGreenColor,(percentage_value - .5)/.5);
+    }
+
+    private Color Interpolate(Color c1,Color c2,double frac){
+
+        double r = Interpolate(c1.red(),c2.red(),frac);
+        double g = Interpolate(c1.green(),c2.green(),frac);
+        double b = Interpolate(c1.blue(),c2.blue(),frac);
+
+        return Color.valueOf(Color.rgb((int) Math.round(r),(int) Math.round(g),(int) Math.round(b)));
+    }
+
+    private double Interpolate(double d1, double d2,double frac){
+        return d1 + (d2 - d1)*frac;
     }
 
 
@@ -212,9 +244,7 @@ public class SinGauge extends View {
 
 
         double currentlevel = getIntialLevel(mVal);
-
         double y_pixels  = (canvas.getHeight() / mLevel) * currentlevel;
-
         double x_pixels  = canvas.getWidth();
 
         double x_c = 0;
@@ -242,7 +272,8 @@ public class SinGauge extends View {
 
         while (yd <= maxy) {
             Integer key = new Integer(Math.round(((float)mLevel / (float)maxy) * (float)yd));
-            Paint p = gradients.get(key);
+            // Paint p = gradients.get(key);
+            Paint p;
            // canvas.drawLine(actual_x, actual_y, actual_x, canvas.getHeight(), p);
             canvas.drawLine(actual_x, yd, actual_x, Math.min(yd+ystep, (int)maxy), p);
             yd = yd+ystep;
