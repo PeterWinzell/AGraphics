@@ -6,9 +6,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.ColorSpace;
+import android.graphics.LinearGradient;
 import android.graphics.Paint;
+import android.graphics.RadialGradient;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.Shader;
+import android.graphics.SweepGradient;
 import android.util.ArrayMap;
 import android.util.AttributeSet;
 import android.view.View;
@@ -44,6 +48,61 @@ public class SinGauge extends View {
 
 
     private float mVal;
+
+    private float[] positions = {0.0f, 0.33f, 0.66f, 1.0f};
+
+    int[] colors = {
+            0xFF34383D, // grayblue
+            0xFF414A56, // grayblueblue
+            0xFF4A688E, // graygrayblue
+            0xFF3B6AA3  // grayblueblueblue
+    };
+
+    private SweepGradient mSweepgradient;
+    private RadialGradient mRadialgradient;
+    private LinearGradient mLineargradient;
+
+    /*
+    Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    paint.setTextSize(18f);
+    int[] colors = {
+            0xFFFFFF88, // yellow
+            0xFF0088FF, // blue
+            0xFF000000, // black
+            0xFFFFFF88  // yellow
+    };
+    float[] positions = {0.0f, 0.33f, 0.66f, 1.0f};
+    { // draw the left heart
+        SweepGradient sweepGradient;
+        { // initialize the sweep gradient
+            sweepGradient = new SweepGradient(50, 50, colors, positions);
+            paint.setShader(sweepGradient);
+        }
+        c.drawPath(heart, paint);
+        c.drawText("SweepGradient", 50, 190, paint);
+    }
+    { // draw the middle heart
+        LinearGradient linearGradient;
+        { // initialize a linear gradient
+            linearGradient = new LinearGradient(250, 0, 350, 150, colors, positions, Shader.TileMode.CLAMP);
+            paint.setShader(linearGradient);
+        }
+        heart.offset(210, 0); // move the heart shape to the middle
+        c.drawPath(heart, paint);
+        c.drawText("LinearGradient", 260, 190, paint);
+    }
+    { // draw the right heart
+        RadialGradient radialGradient;
+        { // initialize a linear gradient
+            radialGradient = new RadialGradient(550, 50, 100, colors, positions, Shader.TileMode.CLAMP);
+            paint.setShader(radialGradient);
+        }
+        heart.offset(210, 0); // move the heart shape to the right
+        c.drawPath(heart, paint);
+        c.drawText("RadialGradient", 470, 190, paint);
+    }
+    */
+
 
     public SinGauge(Context context) {
 
@@ -163,11 +222,20 @@ public class SinGauge extends View {
 
         mbackgroundPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mbackgroundPaint.setStyle(Paint.Style.FILL);
-        mbackgroundPaint.setColor(Color.rgb(127, 127, 127));
+        mbackgroundPaint.setColor(Color.rgb(69, 134, 213));
 
         mbackgroundInnerPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        mbackgroundInnerPaint.setStyle(Paint.Style.FILL);
+        mbackgroundInnerPaint.setStyle(Paint.Style.STROKE);
         mbackgroundInnerPaint.setColor(Color.rgb(150, 150, 150));
+
+        mSweepgradient = new SweepGradient(this.getWidth()/2,this.getHeight()/2,colors,positions);
+        mRadialgradient = new RadialGradient(this.getWidth() /2,this.getHeight() / 2,
+                this.getWidth()/2,colors,positions, Shader.TileMode.CLAMP);
+        mLineargradient = new LinearGradient(0,0,this.getWidth(),this.getHeight(),colors,positions,Shader.TileMode.CLAMP);
+
+        //mbackgroundPaint.setShader(mSweepgradient);
+        //mbackgroundPaint.setShader(mRadialgradient);
+        mbackgroundPaint.setShader(mLineargradient);
 
         // R.drawable.spot_mask
         initialized = true;
