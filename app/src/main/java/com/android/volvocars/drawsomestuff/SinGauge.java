@@ -3,6 +3,7 @@ package com.android.volvocars.drawsomestuff;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.ColorSpace;
 import android.graphics.Paint;
@@ -32,6 +33,9 @@ public class SinGauge extends View {
 
     private Paint mbackgroundPaint;
     private Paint mbackgroundInnerPaint;
+    private Paint mBlackPaint;
+    private Paint mWhitePaint;
+
     private boolean initialized = false;
 
     // coordinate systems default max values
@@ -80,6 +84,16 @@ public class SinGauge extends View {
         mGradPaint = new Paint();
         mGradPaint.setStrokeWidth(50);
 
+        mBlackPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mBlackPaint.setStyle(Paint.Style.FILL);
+        mBlackPaint.setColor(Color.BLACK);
+
+        mWhitePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mWhitePaint.setStyle(Paint.Style.FILL);
+        mWhitePaint.setColor(Color.WHITE);
+
+        mBitmap = BitmapFactory.decodeResource(getResources(),R.drawable.test);
+
     }
 
     private RectF getOval(Canvas canvas, float factor) {
@@ -93,12 +107,24 @@ public class SinGauge extends View {
             oval = new RectF(0, 0, canvasHeight*2*factor, canvasHeight*2*factor);
         }
 
-        oval.offset((canvasWidth-oval.width())/2 + getPaddingLeft(), (canvasHeight*2-oval.height())/2 + getPaddingTop());
+        oval.offset((canvasWidth-oval.width())/2 + getPaddingLeft(), (canvasHeight-oval.height())/2 + getPaddingTop());
 
 
         return oval;
     }
 
+    private void drawBackground(Canvas canvas){
+
+        RectF aRect = getOval(canvas,1);
+
+        canvas.drawArc(aRect,180,360,true,mWhitePaint);
+        aRect.inset(10,10);
+        canvas.drawArc(aRect,180,360,true,mBlackPaint);
+        aRect.inset(5,5);
+        canvas.drawArc(aRect,180,360,true,mbackgroundPaint);
+
+       // canvas.drawBitmap(mBitmap,null,aRect,null);
+    }
 
     /**
      *  Returns the color where you map your value (v[0,maxval] / maxval)
@@ -160,17 +186,12 @@ public class SinGauge extends View {
         return mbG;
     }
 
-    private void drawBackground(Canvas canvas){
-        RectF aRect = getOval(canvas,1);
-        canvas.drawArc(aRect,180,180,true,mbackgroundPaint);
-
-    }
 
     protected void onDraw(Canvas canvas){
         super.onDraw(canvas);
         if (!initialized)  init();
 
-        // drawBackground(canvas);
+        drawBackground(canvas);
         Bitmap bm = drawSome();
         canvas.drawBitmap(bm,0,0,mPaint);
     }
@@ -188,15 +209,20 @@ public class SinGauge extends View {
 
     private void drawSinx(Canvas canvas){
 
+        RectF rect = getOval(canvas,(float).5);
+
 
         double currentlevel = getIntialLevel(mVal);
-        double y_pixels  = (canvas.getHeight() / mLevel) * currentlevel;
-        double x_pixels  = canvas.getWidth();
+        // double y_pixels  = (canvas.getHeight() / mLevel) * currentlevel;
+        // double x_pixels  = canvas.getWidth();
+        double y_pixels  = (rect.height() / mLevel) * currentlevel;
+        double x_pixels  = canvas.getWidth();// rect.width();
+
 
         double x_c = 0;
         while (x_c <= Math.PI ){
             double yval = Math.sin(x_c);
-            drawCurve(x_pixels,y_pixels,x_c,yval,canvas);
+            drawCurve(x_pixels,y_pixels,x_c,yval,canvas,rect);
             x_c = x_c + (Math.PI / 24);
 
         }
@@ -208,11 +234,12 @@ public class SinGauge extends View {
         return Math.round((float)(canvas.getHeight() / mLevel));
     }
 
-    private void drawCurve(double x_max,double y_max,double x, double y,Canvas canvas){
+    private void drawCurve(double x_max,double y_max,double x, double y,Canvas canvas,RectF rect){
         int actual_x = (int) Math.round( (x_max / Math.PI) * x);
-        int actual_y = (int ) Math.round ( (canvas.getHeight() -  (y_max / 1.0) * y));
+        //int actual_y = (int ) Math.round ( (canvas.getHeight() -  (y_max / 1.0) * y));
+        int actual_y = (int ) Math.round ( (rect.height() -  (y_max / 1.0) * y));
 
-        float maxy = canvas.getHeight();
+        float maxy = rect.height();
         int yd = actual_y;
         int ystep = getPixelLevelStep(canvas);
 
@@ -220,7 +247,13 @@ public class SinGauge extends View {
 
             float key = Math.round( (mLevel / (float)maxy) * (float)yd);
             mGradPaint.setColor( GetBlendedColor( key / (float)mLevel).toArgb());
-            canvas.drawLine(actual_x, yd, actual_x, Math.min(yd+ystep, (int)maxy),mGradPaint);
+            float offsetx = actual_x + rect.width()/2;
+            float offsety = rect.height()/2 - 130;
+            //canvas.drawLine(actual_x + rect.width()/2, yd, actual_x, Math.min(yd+ystep, (int)maxy),mGradPaint);
+            float ystart = yd + offsety;
+            float yend = Math.min(yd+ystep,(int)maxy) + offsety;
+
+            canvas.drawLine(actual_x,ystart, actual_x, yend,mGradPaint);
 
             yd = yd+ystep;
         }

@@ -98,6 +98,7 @@ public class TextView extends View {
     }
 
     private void drawBackground(Canvas canvas){
+
         RectF aRect = getOval(canvas,1);
         canvas.drawArc(aRect,180,360,true,mWhitePaint);
         aRect.inset(10,10);
@@ -121,7 +122,8 @@ public class TextView extends View {
         else {
             out = Float.toString(mValue) + " " + mUnitstr;
         }
-            Rect bounds = new Rect();
+
+        Rect bounds = new Rect();
 
         mTextcolor_1.getTextBounds(out,0,out.length(),bounds);
 
