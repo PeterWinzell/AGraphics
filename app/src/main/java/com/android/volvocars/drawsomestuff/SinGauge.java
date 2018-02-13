@@ -167,8 +167,6 @@ public class SinGauge extends View {
         }
 
         oval.offset((canvasWidth-oval.width())/2 + getPaddingLeft(), (canvasHeight-oval.height())/2 + getPaddingTop());
-
-
         return oval;
     }
 
@@ -177,9 +175,9 @@ public class SinGauge extends View {
         RectF aRect = getOval(canvas,1);
 
         canvas.drawArc(aRect,180,360,true,mWhitePaint);
-        aRect.inset(10,10);
+        aRect.inset(20,20);
         canvas.drawArc(aRect,180,360,true,mBlackPaint);
-        aRect.inset(5,5);
+        aRect.inset(10,10);
         canvas.drawArc(aRect,180,360,true,mbackgroundPaint);
 
        // canvas.drawBitmap(mBitmap,null,aRect,null);
