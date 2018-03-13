@@ -172,7 +172,7 @@ public class SinGauge extends View {
 
     private void drawBackground(Canvas canvas){
 
-        RectF aRect = getOval(canvas,1);
+        RectF aRect = getOval(canvas,(float)0.5);
 
         canvas.drawArc(aRect,180,360,true,mWhitePaint);
         aRect.inset(20,20);
@@ -276,13 +276,11 @@ public class SinGauge extends View {
     private void drawSinx(Canvas canvas){
 
         RectF rect = getOval(canvas,(float).5);
-
-
         double currentlevel = getIntialLevel(mVal);
         // double y_pixels  = (canvas.getHeight() / mLevel) * currentlevel;
         // double x_pixels  = canvas.getWidth();
         double y_pixels  = (rect.height() / mLevel) * currentlevel;
-        double x_pixels  = canvas.getWidth();// rect.width();
+        double x_pixels  = rect.width();// canvas.getWidth();rect.width();
 
 
         double x_c = 0;
@@ -296,8 +294,8 @@ public class SinGauge extends View {
 
     }
 
-    private int getPixelLevelStep(Canvas canvas){
-        return Math.round((float)(canvas.getHeight() / mLevel));
+    private int getPixelLevelStep(float height){
+        return Math.round((float)(height / mLevel));
     }
 
     private void drawCurve(double x_max,double y_max,double x, double y,Canvas canvas,RectF rect){
@@ -307,7 +305,7 @@ public class SinGauge extends View {
 
         float maxy = rect.height();
         int yd = actual_y;
-        int ystep = getPixelLevelStep(canvas);
+        int ystep = getPixelLevelStep(rect.height());
 
         while (yd <= maxy) {
 
@@ -319,7 +317,7 @@ public class SinGauge extends View {
             float ystart = yd + offsety;
             float yend = Math.min(yd+ystep,(int)maxy) + offsety;
 
-            canvas.drawLine(actual_x,ystart, actual_x, yend,mGradPaint);
+            canvas.drawLine(rect.left + actual_x,ystart, rect.left + actual_x, yend,mGradPaint);
 
             yd = yd+ystep;
         }
